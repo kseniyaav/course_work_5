@@ -1,24 +1,17 @@
-import os.path
 from configparser import ConfigParser
 
 
 def config(filename="database.ini", section="postgresql"):
-
-    # Create a parser
+    # create a parser
     parser = ConfigParser()
-
-    if not os.path.exists(filename):
-        raise FileNotFoundError
-
-    # Read config file
+    # read config file
     parser.read(filename)
-
+    db = {}
     if parser.has_section(section):
-
         params = parser.items(section)
-        db = dict(params)
-
+        for param in params:
+            db[param[0]] = param[1]
     else:
-        raise Exception(f"Section {section} is not found in the {filename} file.")
-
+        raise Exception(
+            'Section {0} is not found in the {1} file.'.format(section, filename))
     return db
